@@ -1,5 +1,6 @@
 package com.example.toyProject.service.email;
 
+import com.example.toyProject.annotation.DuplicationEmailCheck;
 import com.example.toyProject.dto.EmailMessageDto;
 import lombok.AllArgsConstructor;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -21,6 +22,7 @@ public class EmailServiceImpl implements EmailService {
 
     private final SpringTemplateEngine templateEngine;
 
+    @DuplicationEmailCheck
     @Override
     public Long sendCertMail(EmailMessageDto emailMessageDto, String html) {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
@@ -50,6 +52,6 @@ public class EmailServiceImpl implements EmailService {
 
     private Long createCert() {
         Random random = new Random();
-        return Math.abs(random.nextLong()%100_000_0);
+        return random.nextLong(100_000, 100_000_0);
     }
 }

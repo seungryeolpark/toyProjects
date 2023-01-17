@@ -1,5 +1,6 @@
 package com.example.toyProject.service.member;
 
+import com.example.toyProject.annotation.DuplicationEmailCheck;
 import com.example.toyProject.dto.CertTokenDto;
 import com.example.toyProject.dto.MemberDto;
 import com.example.toyProject.entity.Authority;
@@ -28,6 +29,7 @@ public class MemberService {
 
     private final String ROLE_USER = "ROLE_USER";
 
+    @DuplicationEmailCheck
     @Transactional
     public MemberDto signup(MemberDto memberDto) {
         checkDuplicationAndNotEqual(memberDto);
@@ -61,7 +63,6 @@ public class MemberService {
 
     private void checkDuplicationAndNotEqual(MemberDto memberDto) {
         duplicationUsername(memberDto.getUsername());
-        duplicationEmail(memberDto.getEmail());
         isEqualPassword(memberDto.getPassword(), memberDto.getConfirmPassword());
         isEqualCertToken(memberDto.getEmail(), memberDto.getEmailCert());
     }
@@ -70,12 +71,6 @@ public class MemberService {
         memberRepository.findOneWithAuthoritiesByUsername(username).ifPresent(s -> {
                     throw new DuplicateMemberException("이미 가입되어 있는 유저입니다.");
                 });
-    }
-
-    private void duplicationEmail(String email) {
-        memberRepository.findByEmail(email).ifPresent(s -> {
-            throw new DuplicateEmailException("이미 가입되어 있는 이메일입니다.");
-        });
     }
 
     private void isEqualPassword(String password, String confirmPassword) {

@@ -1,10 +1,7 @@
 package com.example.toyProject.controller;
 
-import com.example.toyProject.dto.EmailMessageDto;
 import com.example.toyProject.dto.MemberDto;
-import com.example.toyProject.service.email.EmailService;
 import com.example.toyProject.service.member.MemberService;
-import com.example.toyProject.service.redis.RedisService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -13,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import javax.validation.constraints.Email;
 import java.io.IOException;
 
 @RestController
