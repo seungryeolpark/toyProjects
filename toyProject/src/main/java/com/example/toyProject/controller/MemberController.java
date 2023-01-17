@@ -22,15 +22,13 @@ import java.io.IOException;
 public class MemberController {
 
     private final MemberService memberService;
-    private final RedisService redisService;
-    private final EmailService emailService;
 
     private final String EMAIL_CERT_HTML = "cert_email";
     private final String EMAIL_CERT_SUBJECT = "[toyProject] 이메일 인증번호";
 
     @PostMapping("/test-redirect")
     public void testRedirect(HttpServletResponse response) throws IOException {
-        response.sendRedirect("/api/user");
+        response.sendRedirect("/api/member");
     }
 
     @PostMapping("/signup")
@@ -38,16 +36,6 @@ public class MemberController {
             @Valid @RequestBody MemberDto memberDto
     ) {
         return ResponseEntity.ok(memberService.signup(memberDto));
-    }
-
-    @GetMapping("/send-cert/{email}")
-    public void sendCertEmail(@PathVariable("email") @Email String email) {
-        EmailMessageDto emailMessageDto = EmailMessageDto.builder()
-                .to(email)
-                .subject(EMAIL_CERT_SUBJECT).build();
-
-        Long cert = emailService.sendCertMail(emailMessageDto, EMAIL_CERT_HTML);
-        redisService.certTokenRedisSave(email, cert);
     }
 
     @GetMapping("/member")

@@ -74,6 +74,7 @@ class MemberRepositoryTest {
         // given
         String username = "memberA";
         Member member = Member.builder()
+                .id(1L)
                 .username(username).build();
 
         // when
@@ -93,6 +94,7 @@ class MemberRepositoryTest {
         String authorityName2 = "ROLE_ADMIN";
 
         Member member = Member.builder()
+                .id(1L)
                 .username(username).build();
 
         member = memberRepository.save(member);
