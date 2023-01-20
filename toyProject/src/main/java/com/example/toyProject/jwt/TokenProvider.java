@@ -1,5 +1,6 @@
 package com.example.toyProject.jwt;
 
+import com.example.toyProject.exception.jwt.CustomExpiredJwtException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -37,6 +38,7 @@ public class TokenProvider implements InitializingBean {
      this.tokenValidityInMilliseconds = tokenValidityInMilliseconds*1000;
     }
 
+    // secret 를 사용해 key 를 만들기 위해 빈 생성후 호출
     @Override
     public void afterPropertiesSet() throws Exception {
         byte[] keyBytes = Decoders.BASE64.decode(secret);
@@ -84,14 +86,13 @@ public class TokenProvider implements InitializingBean {
                     .parseClaimsJws(token);
             return true;
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
-            log.info("잘못된 JWT 서명입니다.", e);
+            throw e;
         } catch (ExpiredJwtException e) {
-            log.info("만료된 JWT 토큰입니다", e);
+            throw e;
         } catch (UnsupportedJwtException e) {
-            log.info("지원되지 않는 JWT 토큰입니다.", e);
+            throw e;
         } catch (IllegalArgumentException e) {
-            log.info("JWT 토큰이 잘못되었습니다.", e);
+            throw e;
         }
-        return false;
     }
 }

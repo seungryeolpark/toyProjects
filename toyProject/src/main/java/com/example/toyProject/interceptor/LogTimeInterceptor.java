@@ -16,7 +16,7 @@ public class LogTimeInterceptor implements HandlerInterceptor {
         long currentTime = System.currentTimeMillis();
 
         request.setAttribute("start", currentTime);
-        log.info("[log] {} start", request.getRequestURI());
+        log.info("[info] {} start", request.getRequestURI());
         return HandlerInterceptor.super.preHandle(request, response, handler);
     }
 
@@ -27,7 +27,7 @@ public class LogTimeInterceptor implements HandlerInterceptor {
         long startTime = (long) request.getAttribute("start");
         long totalTime = currentTime-startTime;
 
-        log.info("[log] {} end, {}ms", request.getRequestURI(), totalTime);
+        log.info("[info] {} end, {}ms", request.getRequestURI(), totalTime);
         HandlerInterceptor.super.postHandle(request, response, handler, modelAndView);
     }
 }

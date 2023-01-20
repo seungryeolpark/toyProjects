@@ -3,10 +3,14 @@ package com.example.toyProject.service.member;
 import com.example.toyProject.annotation.DuplicationEmailCheck;
 import com.example.toyProject.dto.CertTokenDto;
 import com.example.toyProject.dto.MemberDto;
+import com.example.toyProject.dto.enums.ErrorCode;
 import com.example.toyProject.entity.Authority;
 import com.example.toyProject.entity.Member;
 import com.example.toyProject.entity.MemberAuthority;
-import com.example.toyProject.exception.*;
+import com.example.toyProject.exception.duplication.DuplicateMemberException;
+import com.example.toyProject.exception.notEqual.NotEqualCertTokenException;
+import com.example.toyProject.exception.notEqual.NotEqualPasswordException;
+import com.example.toyProject.exception.notEqual.NotFoundMemberException;
 import com.example.toyProject.repository.AuthorityRepository;
 import com.example.toyProject.repository.CertTokenRepository;
 import com.example.toyProject.repository.MemberRepository;
@@ -57,7 +61,9 @@ public class MemberService {
         return MemberDto.from(
                 SecurityUtil.getCurrentUsername()
                 .flatMap(memberRepository::findOneWithAuthoritiesByUsername)
-                .orElseThrow(() -> new NotFoundMemberException("유저를 찾지 못했습니다."))
+                .orElseThrow(() -> new NotFoundMemberException(
+                        "유저를 찾지 못했습니다.",
+                        ErrorCode.NOT_FOUND_MEMBER))
         );
     }
 
@@ -69,13 +75,15 @@ public class MemberService {
 
     private void duplicationUsername(String username) {
         memberRepository.findOneWithAuthoritiesByUsername(username).ifPresent(s -> {
-                    throw new DuplicateMemberException("이미 가입되어 있는 유저입니다.");
+                    throw new DuplicateMemberException(
+                            "이미 가입되어 있는 유저입니다.",
+                            ErrorCode.DUPLICATION_MEMBER);
                 });
     }
 
     private void isEqualPassword(String password, String confirmPassword) {
         if (!Objects.equals(password, confirmPassword)) {
-            throw new NotEqualPassword("비밀번호가 다릅니다.");
+            throw new NotEqualPasswordException("비밀번호가 다릅니다.", ErrorCode.NOT_EQUAL_PASSWORD);
         }
     }
 
@@ -83,7 +91,7 @@ public class MemberService {
         CertTokenDto certTokenDto = certTokenRepository.findById(email).orElse(null);
 
         if (certTokenDto == null || !Objects.equals(certTokenDto.getCertValue(), emailCert)) {
-            throw new NotEqualCertTokenException("인증번호가 틀립니다.");
+            throw new NotEqualCertTokenException("인증번호가 틀립니다.", ErrorCode.NOT_EQUAL_CERT_TOKEN);
         }
     }
 

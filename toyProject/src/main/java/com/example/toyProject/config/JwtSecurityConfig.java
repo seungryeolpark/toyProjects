@@ -1,6 +1,6 @@
 package com.example.toyProject.config;
 
-import com.example.toyProject.jwt.JwtFilter;
+import com.example.toyProject.filter.JwtFilter;
 import com.example.toyProject.jwt.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;

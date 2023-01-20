@@ -2,7 +2,7 @@ package com.example.toyProject.controller;
 
 import com.example.toyProject.dto.LoginDto;
 import com.example.toyProject.dto.TokenDto;
-import com.example.toyProject.jwt.JwtFilter;
+import com.example.toyProject.filter.JwtFilter;
 import com.example.toyProject.jwt.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -27,6 +27,11 @@ public class AuthController {
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
+    // SecurityConfig 에 FormLogin() 을 비활성화 했기에
+    // UsernamePasswordAuthenticationFilter 를 사용할 수 없어
+    // 직접 UsernamePasswordAuthenticationToken 을 만들어
+    // authenticate 메서드를 통해 Authentication 객체를 얻어와 인증 정보 갱신
+    // 인증 정보를 토대로 Jwt 토큰을 만들어 Response headers 에 Jwt 토큰을 넣어둠
     @PostMapping("/authenticate")
     public ResponseEntity<TokenDto> authorize(@Valid @RequestBody LoginDto loginDto) {
 

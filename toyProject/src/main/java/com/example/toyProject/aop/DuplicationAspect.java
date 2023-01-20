@@ -2,7 +2,8 @@ package com.example.toyProject.aop;
 
 import com.example.toyProject.dto.EmailMessageDto;
 import com.example.toyProject.dto.MemberDto;
-import com.example.toyProject.exception.DuplicateEmailException;
+import com.example.toyProject.dto.enums.ErrorCode;
+import com.example.toyProject.exception.duplication.DuplicateEmailException;
 import com.example.toyProject.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,10 +25,10 @@ public class DuplicationAspect {
         Object object = joinPoint.getArgs()[0];
 
         if (object instanceof EmailMessageDto) {
-            log.info("object : {}", ((EmailMessageDto) object).getTo());
+            log.info("[info] object : {}", ((EmailMessageDto) object).getTo());
             duplicationEmail( ((EmailMessageDto) object).getTo());
         } else if (object instanceof MemberDto) {
-            log.info("object : {}", ((MemberDto) object).getEmail());
+            log.info("[info] object : {}", ((MemberDto) object).getEmail());
             duplicationEmail( ((MemberDto) object).getEmail());
         }
 
@@ -37,7 +38,9 @@ public class DuplicationAspect {
 
     private void duplicationEmail(String email) {
         memberRepository.findByEmail(email).ifPresent(s -> {
-            throw new DuplicateEmailException("이미 가입되어 있는 이메일입니다.");
+            throw new DuplicateEmailException(
+                    "이미 가입되어 있는 이메일입니다.",
+                    ErrorCode.DUPLICATION_EMAIL);
         });
     }
 }

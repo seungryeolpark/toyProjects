@@ -1,7 +1,5 @@
 package com.example.toyProject.util;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -10,7 +8,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Optional;
 
 @Slf4j
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class SecurityUtil {
 
     public static Optional<String> getCurrentUsername() {

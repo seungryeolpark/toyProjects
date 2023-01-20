@@ -17,3 +17,4 @@
 + REST API 기능
 + AOP 를 이용한 중복체크 로직 기능
 + Interceptor 를 이용한 로그 기능
++ Exception 오류를 Response 에 json 형식으로 응답 기능
