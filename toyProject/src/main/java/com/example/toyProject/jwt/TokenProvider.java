@@ -1,6 +1,5 @@
 package com.example.toyProject.jwt;
 
-import com.example.toyProject.exception.jwt.CustomExpiredJwtException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -56,6 +55,18 @@ public class TokenProvider implements InitializingBean {
 
         return Jwts.builder()
                 .setSubject(authentication.getName())
+                .claim(AUTHORITIES_KEY, authorities)
+                .signWith(key, SignatureAlgorithm.HS512)
+                .setExpiration(validity)
+                .compact();
+    }
+
+    public String createToken(String username, String authorities) {
+        long now = new Date().getTime();
+        Date validity = new Date(now+this.tokenValidityInMilliseconds);
+
+        return Jwts.builder()
+                .setSubject(username)
                 .claim(AUTHORITIES_KEY, authorities)
                 .signWith(key, SignatureAlgorithm.HS512)
                 .setExpiration(validity)

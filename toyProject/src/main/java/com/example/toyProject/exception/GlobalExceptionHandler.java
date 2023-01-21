@@ -3,8 +3,11 @@ package com.example.toyProject.exception;
 import com.example.toyProject.dto.ErrorResponseDto;
 import com.example.toyProject.exception.duplication.DuplicateEmailException;
 import com.example.toyProject.exception.duplication.DuplicateMemberException;
+import com.example.toyProject.exception.jwt.EmptyRefreshTokenException;
 import com.example.toyProject.exception.jwt.EmptyTokenException;
+import com.example.toyProject.exception.jwt.ExpiredRefreshTokenException;
 import com.example.toyProject.exception.notEqual.NotEqualCertTokenException;
+import com.example.toyProject.exception.notEqual.NotEqualClientIpException;
 import com.example.toyProject.exception.notEqual.NotEqualPasswordException;
 import com.example.toyProject.exception.notEqual.NotFoundMemberException;
 import org.springframework.http.HttpStatus;
@@ -40,6 +43,14 @@ public class GlobalExceptionHandler {
         );
     }
 
+    @ExceptionHandler(EmptyRefreshTokenException.class)
+    public ResponseEntity<ErrorResponseDto> handleEmptyRefreshTokenException(EmptyRefreshTokenException e) {
+        ErrorResponseDto responseDto = new ErrorResponseDto(e.getErrorCode());
+        return new ResponseEntity<>(responseDto,
+                HttpStatus.valueOf(e.getErrorCode().getStatus())
+        );
+    }
+
     @ExceptionHandler(NotEqualCertTokenException.class)
     public ResponseEntity<ErrorResponseDto> handleNotEqualCertTokenException(NotEqualCertTokenException e) {
         ErrorResponseDto responseDto = new ErrorResponseDto(e.getErrorCode());
@@ -56,8 +67,24 @@ public class GlobalExceptionHandler {
         );
     }
 
+    @ExceptionHandler(NotEqualClientIpException.class)
+    public ResponseEntity<ErrorResponseDto> handleNotEqualClientIpException(NotEqualClientIpException e) {
+        ErrorResponseDto responseDto = new ErrorResponseDto(e.getErrorCode());
+        return new ResponseEntity<>(responseDto,
+                HttpStatus.valueOf(e.getErrorCode().getStatus())
+        );
+    }
+
     @ExceptionHandler(NotFoundMemberException.class)
     public ResponseEntity<ErrorResponseDto> handleNotFoundMemberException(NotFoundMemberException e) {
+        ErrorResponseDto responseDto = new ErrorResponseDto(e.getErrorCode());
+        return new ResponseEntity<>(responseDto,
+                HttpStatus.valueOf(e.getErrorCode().getStatus())
+        );
+    }
+
+    @ExceptionHandler(ExpiredRefreshTokenException.class)
+    public ResponseEntity<ErrorResponseDto> handleExpiredRefreshTokenException(ExpiredRefreshTokenException e) {
         ErrorResponseDto responseDto = new ErrorResponseDto(e.getErrorCode());
         return new ResponseEntity<>(responseDto,
                 HttpStatus.valueOf(e.getErrorCode().getStatus())

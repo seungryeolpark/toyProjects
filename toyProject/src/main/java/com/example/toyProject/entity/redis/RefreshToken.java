@@ -1,4 +1,4 @@
-package com.example.toyProject.dto.redis;
+package com.example.toyProject.entity.redis;
 
 import lombok.*;
 import org.springframework.data.redis.core.RedisHash;
@@ -6,12 +6,12 @@ import org.springframework.data.redis.core.RedisHash;
 
 @Getter
 @RedisHash(value = "refreshToken", timeToLive = (3600*24*14))
-public class RefreshTokenDto {
+public class RefreshToken {
 
     private String id;
-    private String accessToken;
+    private AccessToken accessToken;
 
-    public RefreshTokenDto(String id, String accessToken) {
+    public RefreshToken(String id, AccessToken accessToken) {
         this.id = id;
         this.accessToken = accessToken;
     }

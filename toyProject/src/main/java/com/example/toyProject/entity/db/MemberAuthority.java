@@ -1,4 +1,4 @@
-package com.example.toyProject.entity;
+package com.example.toyProject.entity.db;
 
 import lombok.Builder;
 import lombok.Getter;

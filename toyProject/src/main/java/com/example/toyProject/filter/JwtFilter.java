@@ -4,6 +4,7 @@ import com.example.toyProject.config.SecurityConfig;
 import com.example.toyProject.dto.enums.ErrorCode;
 import com.example.toyProject.exception.jwt.EmptyTokenException;
 import com.example.toyProject.jwt.TokenProvider;
+import com.example.toyProject.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -23,6 +24,7 @@ import java.io.IOException;
 public class JwtFilter extends GenericFilterBean {
 
     public static final String AUTHORIZATION_HEADER = "Authorization";
+    public static final String REFRESH_TOKEN_HEADER = "Refresh-Token";
 
     private final TokenProvider tokenProvider;
 
@@ -30,10 +32,13 @@ public class JwtFilter extends GenericFilterBean {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-        String jwt = resolveToken(httpServletRequest);
+        String jwt = SecurityUtil.resolveToken(httpServletRequest);
         String requestURI = httpServletRequest.getRequestURI();
 
+        requestURI = SecurityUtil.convertUriPattern(requestURI);
+        log.info("[info] requestURI : {}", requestURI);
         for (String pattern : SecurityConfig.PERMIT_ALL_PATTERNS) {
+            log.info("[info] pattern : {}", pattern);
             if (requestURI.equals(pattern)) {
                 chain.doFilter(request, response);
                 return;
@@ -42,7 +47,6 @@ public class JwtFilter extends GenericFilterBean {
 
         if (StringUtils.hasText(jwt)) { // jwt 토큰이 있는 경우
             if (tokenProvider.validateToken(jwt)) { // jwt 토큰 유효성 검사 유효할 경우 true
-
                 // 인증 정보가 존재하지 않는 경우 인증 정보 갱신
                 if (SecurityContextHolder.getContext().getAuthentication() == null) {
                     Authentication authentication = tokenProvider.getAuthentication(jwt);
@@ -58,14 +62,5 @@ public class JwtFilter extends GenericFilterBean {
         }
 
         chain.doFilter(request, response);
-    }
-
-    // Request Header 에서 토큰 정보를 꺼내옴
-    private String resolveToken(HttpServletRequest request) {
-        String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7);
-        }
-        return null;
     }
 }

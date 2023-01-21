@@ -1,7 +1,6 @@
 package com.example.toyProject.repository;
 
-import com.example.toyProject.repository.CertTokenRepository;
-import com.example.toyProject.dto.CertTokenDto;
+import com.example.toyProject.entity.redis.CertToken;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,14 +24,14 @@ class CertTokenRepositoryTest {
         Random random = new Random();
         String key = "test";
         Long value = Math.abs(random.nextLong()%100_000_0);
-        CertTokenDto certTokenDto = new CertTokenDto(key, value);
+        CertToken certToken = new CertToken(key, value);
 
         // when
-        certTokenRepository.save(certTokenDto);
-        Optional<CertTokenDto> temp = certTokenRepository.findById(key);
+        certTokenRepository.save(certToken);
+        Optional<CertToken> temp = certTokenRepository.findById(key);
 
         // then
-        CertTokenDto result = temp.get();
+        CertToken result = temp.get();
         assertThat(result.getCertValue()).isEqualTo(value);
     }
 

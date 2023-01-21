@@ -1,6 +1,6 @@
 package com.example.toyProject.service.member;
 
-import com.example.toyProject.entity.Member;
+import com.example.toyProject.entity.db.Member;
 import com.example.toyProject.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -17,12 +17,12 @@ import java.util.stream.Collectors;
 
 @Component("userDetailsService")
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class CustomUserDetailsService implements UserDetailsService {
 
     private final MemberRepository memberRepository;
 
     @Override
-    @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return memberRepository.findOneWithAuthoritiesByUsername(username)
                 .map(member -> createUser(username, member))

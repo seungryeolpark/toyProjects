@@ -2,7 +2,7 @@ package com.example.toyProject.service.email;
 
 import com.example.toyProject.annotation.DuplicationEmailCheck;
 import com.example.toyProject.dto.EmailMessageDto;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -14,8 +14,8 @@ import javax.mail.internet.MimeMessage;
 import java.util.Random;
 
 @Service
-@AllArgsConstructor
-public class EmailServiceImpl implements EmailService {
+@RequiredArgsConstructor
+public class EmailService {
 
 
     private final JavaMailSender javaMailSender;
@@ -23,7 +23,6 @@ public class EmailServiceImpl implements EmailService {
     private final SpringTemplateEngine templateEngine;
 
     @DuplicationEmailCheck
-    @Override
     public Long sendCertMail(EmailMessageDto emailMessageDto, String html) {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 

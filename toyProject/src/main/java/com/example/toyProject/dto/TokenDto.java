@@ -1,5 +1,6 @@
 package com.example.toyProject.dto;
 
+import com.example.toyProject.entity.redis.AccessToken;
 import lombok.*;
 
 @Getter
@@ -7,10 +8,12 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class TokenDto {
 
-    private String token;
+    private AccessToken accessToken;
+    private String refreshToken;
 
     @Builder
-    public TokenDto(String token) {
-        this.token = token;
+    public TokenDto(AccessToken accessToken, String refreshToken) {
+        this.accessToken = accessToken;
+        this.refreshToken = refreshToken;
     }
 }

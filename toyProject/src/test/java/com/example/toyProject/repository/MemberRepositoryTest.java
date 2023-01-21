@@ -1,17 +1,15 @@
 package com.example.toyProject.repository;
 
-import com.example.toyProject.entity.Authority;
-import com.example.toyProject.entity.Member;
-import com.example.toyProject.entity.MemberAuthority;
-import com.example.toyProject.repository.MemberRepository;
-import org.assertj.core.api.Assertions;
+import com.example.toyProject.dto.enums.ErrorCode;
+import com.example.toyProject.entity.db.Authority;
+import com.example.toyProject.entity.db.Member;
+import com.example.toyProject.entity.db.MemberAuthority;
+import com.example.toyProject.exception.notEqual.NotFoundMemberException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -79,7 +77,8 @@ class MemberRepositoryTest {
 
         // when
         Member savedMember = memberRepository.save(member);
-        Member findMember = memberRepository.findByUsername(username);
+        Member findMember = memberRepository.findByUsername(username)
+                .orElseThrow(() -> new NotFoundMemberException("회원을 찾지 못했습니다.", ErrorCode.NOT_FOUND_MEMBER));
 
         // then
         assertThat(findMember.getId()).isEqualTo(member.getId());

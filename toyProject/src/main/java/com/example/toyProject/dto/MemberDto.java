@@ -1,7 +1,7 @@
 package com.example.toyProject.dto;
 
-import com.example.toyProject.entity.Member;
-import com.example.toyProject.entity.MemberAuthority;
+import com.example.toyProject.entity.db.Member;
+import com.example.toyProject.entity.db.MemberAuthority;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;

@@ -1,10 +1,8 @@
 package com.example.toyProject.repository;
 
-import com.example.toyProject.entity.Authority;
-import com.example.toyProject.entity.Member;
-import com.example.toyProject.entity.MemberAuthority;
-import com.example.toyProject.repository.AuthorityRepository;
-import com.example.toyProject.repository.MemberRepository;
+import com.example.toyProject.entity.db.Authority;
+import com.example.toyProject.entity.db.Member;
+import com.example.toyProject.entity.db.MemberAuthority;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

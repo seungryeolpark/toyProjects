@@ -25,10 +25,8 @@ public class DuplicationAspect {
         Object object = joinPoint.getArgs()[0];
 
         if (object instanceof EmailMessageDto) {
-            log.info("[info] object : {}", ((EmailMessageDto) object).getTo());
             duplicationEmail( ((EmailMessageDto) object).getTo());
         } else if (object instanceof MemberDto) {
-            log.info("[info] object : {}", ((MemberDto) object).getEmail());
             duplicationEmail( ((MemberDto) object).getEmail());
         }
 

@@ -37,6 +37,7 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
         } catch (IllegalArgumentException e) {
             sendErrorResponse(response, ErrorCode.IllegalArgument);
         } catch (Exception e) {
+            log.error("[error] Exception", e);
             sendErrorResponse(response, ErrorCode.EXCEPTION);
         }
 

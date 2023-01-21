@@ -1,4 +1,4 @@
-package com.example.toyProject.entity;
+package com.example.toyProject.entity.db;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
