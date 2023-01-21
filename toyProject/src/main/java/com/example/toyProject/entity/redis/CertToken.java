@@ -1,4 +1,4 @@
-package com.example.toyProject.dto;
+package com.example.toyProject.dto.redis;
 
 import lombok.Getter;
 import org.springframework.data.annotation.Id;
