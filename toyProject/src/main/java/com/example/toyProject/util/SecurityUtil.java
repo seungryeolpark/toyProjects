@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -52,7 +53,7 @@ public class SecurityUtil {
         String result = "";
 
         for (String pattern : patterns) {
-            if (pattern.equals("")) continue;
+            if (Objects.equals(pattern, "")) continue;
             else if (isEmail(pattern)) pattern = "{email}";
 
             result += "/"+pattern;

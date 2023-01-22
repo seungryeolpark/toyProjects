@@ -231,7 +231,7 @@ public class MemberService {
     private void isEqualCertToken(String email, Long emailCert) {
         CertToken certToken = certTokenRepository.findById(email).orElse(null);
 
-        if (certToken == null || !Objects.equals(certToken.getCertValue(), emailCert)) {
+        if (!Objects.equals(certToken.getCertValue(), emailCert)) {
             throw new NotEqualCertTokenException("인증번호가 틀립니다.", ErrorCode.NOT_EQUAL_CERT_TOKEN);
         }
     }
