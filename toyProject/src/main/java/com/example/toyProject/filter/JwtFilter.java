@@ -18,6 +18,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.Objects;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -36,10 +37,8 @@ public class JwtFilter extends GenericFilterBean {
         String requestURI = httpServletRequest.getRequestURI();
 
         requestURI = SecurityUtil.convertUriPattern(requestURI);
-        log.info("[info] requestURI : {}", requestURI);
         for (String pattern : SecurityConfig.PERMIT_ALL_PATTERNS) {
-            log.info("[info] pattern : {}", pattern);
-            if (requestURI.equals(pattern)) {
+            if (Objects.equals(requestURI, pattern)) {
                 chain.doFilter(request, response);
                 return;
             }

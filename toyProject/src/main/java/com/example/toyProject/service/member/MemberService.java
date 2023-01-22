@@ -178,14 +178,17 @@ public class MemberService {
         switch (errorType) {
             case "IP" :
                 isNotEqualIP((String) o1, (String) o2, errorMessage);
+                break;
             case "JT" :
                 isNotEqualJWT((String) o1, (String) o2, errorMessage);
+                break;
         }
 
         return null;
     }
 
     private ResponseEntity isNotEqualJWT(String s1, String s2, String errorMessage) {
+        if (Objects.equals(s1, s2)) return null;
         ErrorCode errorCode = ErrorCode.NOT_EQUAL_JWT_TOKEN;
         ErrorResponseDto responseDto = new ErrorResponseDto(errorCode);
         return new ResponseEntity<>(responseDto,
@@ -193,7 +196,7 @@ public class MemberService {
         );
     }
     private void isNotEqualIP(String s1, String s2, String errorMessage) {
-        if (s1.equals(s2)) throw new NotEqualClientIpException(errorMessage, ErrorCode.NOT_EQUAL_CLIENT_IP);
+        if (!Objects.equals(s1, s2)) throw new NotEqualClientIpException(errorMessage, ErrorCode.NOT_EQUAL_CLIENT_IP);
     }
     private String getRemoteAddr(HttpServletRequest request) {
         return (request.getHeader("X-FORWARDED-FOR") != null) ?
