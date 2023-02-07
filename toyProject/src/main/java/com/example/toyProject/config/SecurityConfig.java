@@ -29,7 +29,7 @@ public class SecurityConfig {
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
 
     public static final String[] PERMIT_ALL_PATTERNS = {"/api/authenticate",
-            "/api/signup", "/api/send-cert/{email}", "/api/check/refreshToken"};
+            "/api/signup", "/api/send-cert/email/{email}", "/api/check/refreshToken"};
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {

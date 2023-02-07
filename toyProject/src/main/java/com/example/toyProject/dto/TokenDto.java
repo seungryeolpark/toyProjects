@@ -1,6 +1,6 @@
 package com.example.toyProject.dto;
 
-import com.example.toyProject.entity.redis.AccessToken;
+import com.example.toyProject.entity.redis.refreshToken.AccessToken;
 import lombok.*;
 
 @Getter

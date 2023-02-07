@@ -37,7 +37,9 @@ public class JwtFilter extends GenericFilterBean {
         String requestURI = httpServletRequest.getRequestURI();
 
         requestURI = SecurityUtil.convertUriPattern(requestURI);
+        log.info("[info] requestURI = {}", requestURI);
         for (String pattern : SecurityConfig.PERMIT_ALL_PATTERNS) {
+            log.info("[info] permit_all_pattern = {}", pattern);
             if (Objects.equals(requestURI, pattern)) {
                 chain.doFilter(request, response);
                 return;
@@ -45,6 +47,7 @@ public class JwtFilter extends GenericFilterBean {
         }
 
         if (StringUtils.hasText(jwt)) { // jwt 토큰이 있는 경우
+            log.info("[info] jwt = {}", jwt);
             if (tokenProvider.validateToken(jwt)) { // jwt 토큰 유효성 검사 유효할 경우 true
                 // 인증 정보가 존재하지 않는 경우 인증 정보 갱신
                 if (SecurityContextHolder.getContext().getAuthentication() == null) {

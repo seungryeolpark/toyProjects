@@ -20,6 +20,7 @@ public enum ErrorCode {
     EXPIRED_REFRESH_TOKEN(401, "EPJ-002", "EXPIRED REFRESH_TOKEN"),
     UN_SUPPORT_JWT_TOKEN(401, "USJ-001", "UN SUPPORT JWT TOKEN"),
     IllegalArgument(401, "IAJ-001", "IllegalArgument JWT TOKEN"),
+    AuthenticationException(403, "AUTH-001", "Auth Fail"),
     EXCEPTION(500, "EXC-001", "EXCEPTION");
 
     private int status;

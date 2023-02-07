@@ -4,14 +4,14 @@ import com.example.toyProject.annotation.DuplicationEmailCheck;
 import com.example.toyProject.dto.ErrorResponseDto;
 import com.example.toyProject.dto.LoginDto;
 import com.example.toyProject.dto.TokenDto;
-import com.example.toyProject.entity.redis.AccessToken;
+import com.example.toyProject.entity.redis.refreshToken.AccessToken;
 import com.example.toyProject.entity.redis.CertToken;
 import com.example.toyProject.dto.MemberDto;
 import com.example.toyProject.dto.enums.ErrorCode;
 import com.example.toyProject.entity.db.Authority;
 import com.example.toyProject.entity.db.Member;
 import com.example.toyProject.entity.db.MemberAuthority;
-import com.example.toyProject.entity.redis.RefreshToken;
+import com.example.toyProject.entity.redis.refreshToken.RefreshToken;
 import com.example.toyProject.exception.duplication.DuplicateMemberException;
 import com.example.toyProject.exception.jwt.EmptyRefreshTokenException;
 import com.example.toyProject.exception.jwt.ExpiredRefreshTokenException;
@@ -54,8 +54,6 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final AuthorityRepository authorityRepository;
-    private final CertTokenRepository certTokenRepository;
-    private final RefreshTokenRepository refreshTokenRepository;
 
     private final RedisService redisService;
 
@@ -100,7 +98,7 @@ public class MemberService {
                         .ip(getRemoteAddr(request))
                         .username(loginDto.getUsername())
                         .jwt(jwt).build();
-        redisService.refreshTokenRedisSave(uuid, accessToken);
+        redisService.refreshTokenSave(uuid, accessToken);
 
         return new ResponseEntity<>(TokenDto.builder()
                 .accessToken(accessToken)
@@ -114,10 +112,7 @@ public class MemberService {
         if (refreshTokenId.isEmpty())
             throw new EmptyRefreshTokenException("Refresh Token 이 없습니다", ErrorCode.EMPTY_REFRESH_TOKEN);
 
-        RefreshToken refreshToken = refreshTokenRepository.findById(refreshTokenId)
-                .orElseThrow(
-                        () -> new ExpiredRefreshTokenException("Refresh Token 기한이 만료되었습니다.", ErrorCode.EXPIRED_REFRESH_TOKEN)
-                );
+        RefreshToken refreshToken = redisService.refreshTokenFindById(refreshTokenId);
 
         String clientIp = getRemoteAddr(request);
         String username = refreshToken.getAccessToken().getUsername();
@@ -128,7 +123,7 @@ public class MemberService {
 
         // jwt 토큰이 다를 경우
         if (response != null) {
-            refreshTokenRepository.deleteById(refreshTokenId);
+            redisService.refreshTokenDeleteById(refreshTokenId);
             return response;
         }
 
@@ -143,8 +138,8 @@ public class MemberService {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer "+newJwt);
 
-        refreshTokenRepository.deleteById(refreshTokenId);
-        redisService.refreshTokenRedisSave(refreshTokenId, accessToken);
+        redisService.refreshTokenDeleteById(refreshTokenId);
+        redisService.refreshTokenSave(refreshTokenId, accessToken);
         return new ResponseEntity<>(TokenDto.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshTokenId).build(), httpHeaders, HttpStatus.OK);
@@ -152,7 +147,11 @@ public class MemberService {
 
     public MemberDto getUserWithAuthorities(String username) {
         return MemberDto.from(memberRepository
-                .findOneWithAuthoritiesByUsername(username).orElse(null));
+                .findOneWithAuthoritiesByUsername(username).orElseThrow(
+                        () -> new NotFoundMemberException(
+                                "유저를 찾지 못했습니다.",
+                                ErrorCode.NOT_FOUND_MEMBER))
+        );
     }
 
     public MemberDto getMyUserWithAuthorities() {
@@ -164,6 +163,8 @@ public class MemberService {
                         ErrorCode.NOT_FOUND_MEMBER))
         );
     }
+
+    // private 메소드
 
     private String getAuthorities(String username) {
         return memberRepository.findByUsername(username)
@@ -229,8 +230,7 @@ public class MemberService {
     }
 
     private void isEqualCertToken(String email, Long emailCert) {
-        CertToken certToken = certTokenRepository.findById(email).orElse(null);
-
+        CertToken certToken = redisService.certTokenFindByEmail(email);
         if (!Objects.equals(certToken.getCertValue(), emailCert)) {
             throw new NotEqualCertTokenException("인증번호가 틀립니다.", ErrorCode.NOT_EQUAL_CERT_TOKEN);
         }

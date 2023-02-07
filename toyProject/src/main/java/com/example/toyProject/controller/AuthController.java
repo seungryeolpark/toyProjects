@@ -2,21 +2,15 @@ package com.example.toyProject.controller;
 
 import com.example.toyProject.dto.LoginDto;
 import com.example.toyProject.dto.TokenDto;
-import com.example.toyProject.dto.enums.ErrorCode;
-import com.example.toyProject.exception.jwt.EmptyRefreshTokenException;
 import com.example.toyProject.filter.JwtFilter;
 import com.example.toyProject.service.member.MemberService;
-import com.example.toyProject.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.util.Arrays;
 
 @Slf4j
 @RestController

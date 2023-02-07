@@ -1,4 +1,4 @@
-package com.example.toyProject.entity.redis;
+package com.example.toyProject.entity.redis.refreshToken;
 
 import lombok.*;
 import org.springframework.data.redis.core.RedisHash;

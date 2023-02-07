@@ -1,6 +1,7 @@
 package com.example.toyProject.exception;
 
 import com.example.toyProject.dto.ErrorResponseDto;
+import com.example.toyProject.dto.enums.ErrorCode;
 import com.example.toyProject.exception.duplication.DuplicateEmailException;
 import com.example.toyProject.exception.duplication.DuplicateMemberException;
 import com.example.toyProject.exception.jwt.EmptyRefreshTokenException;
@@ -12,6 +13,8 @@ import com.example.toyProject.exception.notEqual.NotEqualPasswordException;
 import com.example.toyProject.exception.notEqual.NotFoundMemberException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -88,6 +91,14 @@ public class GlobalExceptionHandler {
         ErrorResponseDto responseDto = new ErrorResponseDto(e.getErrorCode());
         return new ResponseEntity<>(responseDto,
                 HttpStatus.valueOf(e.getErrorCode().getStatus())
+        );
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<ErrorResponseDto> handleAuthenticationException() {
+        ErrorResponseDto responseDto = new ErrorResponseDto(ErrorCode.AuthenticationException);
+        return new ResponseEntity<>(responseDto,
+                HttpStatus.valueOf(responseDto.getStatus())
         );
     }
 }

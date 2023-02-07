@@ -2,6 +2,7 @@ package com.example.toyProject.service.email;
 
 import com.example.toyProject.annotation.DuplicationEmailCheck;
 import com.example.toyProject.dto.EmailMessageDto;
+import com.example.toyProject.service.redis.RedisService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -17,13 +18,16 @@ import java.util.Random;
 @RequiredArgsConstructor
 public class EmailService {
 
+    private final RedisService redisService;
 
     private final JavaMailSender javaMailSender;
-
     private final SpringTemplateEngine templateEngine;
 
+    public static final String EMAIL_CERT_HTML = "cert_email";
+    public static final String EMAIL_CERT_SUBJECT = "[toyProject] 이메일 인증번호";
+
     @DuplicationEmailCheck
-    public Long sendCertMail(EmailMessageDto emailMessageDto, String html) {
+    public void sendCertMail(EmailMessageDto emailMessageDto, String html) {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 
         Long cert = createCert();
@@ -40,7 +44,7 @@ public class EmailService {
             throw new RuntimeException(e);
         }
 
-        return cert;
+        redisService.certTokenSave(emailMessageDto.getTo(), cert);
     }
 
     private String setContext(String code, String html) {
