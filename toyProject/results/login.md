@@ -31,6 +31,7 @@
     + 클라이언트가 보낸 jwt 가 없을경우
       ![jwt_empty](https://user-images.githubusercontent.com/48073115/217146534-1a5cea8a-5eaa-4769-8a80-0111fde04ae4.png)
     + 클라이언트가 보낸 jwt 가 기한이 지났을 경우
+
       ![jwt_expired](https://user-images.githubusercontent.com/48073115/217147956-1f1056ff-2ae9-4c75-96f0-8aac3c27c99a.png)
 
 + Admin 권한에 User 권한 접근 금지
