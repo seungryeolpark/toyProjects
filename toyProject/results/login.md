@@ -39,13 +39,14 @@
 ![forbidden](https://user-images.githubusercontent.com/48073115/217147312-360c6d94-09c0-4fbc-9a7b-31e18f22580f.png)
 
 + refreshToken 알고리즘
-    + 지금 접속한 ip 와 access token 에 있는 ip 비교
+    + refreshToken 인덱스로 accessToken 을 가져온다.
+    + 지금 접속한 ip 와 accessToken 에 있는 ip 비교
         + 같으면 계속 진행
         + 틀릴경우 json 형식으로 오류 응답
-    + refreshToken 인덱스로 redis 에 저장되어 있는 jwt 비교
+    + 클라이언트의 jwt 와 accessToken 에 저장되어 있는 jwt 비교
         + 같으면 계속 진행
-        + 틀릴경우 jwt 가 탈취됐다고 판단 redis <refreshToken, jwt> 삭제
+        + 틀릴경우 jwt 가 탈취됐다고 판단 redis <refreshToken, accessToken> 삭제
           (탈취한 사람도 당한 사람도 다시 그 사용자 권한 이용할려면 로그인해야함),
           json 형식으로 오류 응답
-    + 마지막 단계까지 오면 jwt 기한이 만료됐다고 판단, refreshToken 은 그대로 두고 jwt 만 새로 갱신
-      (redis 에서도 jwt 새로 갱신한걸 저장)
+    + 마지막 단계까지 오면 jwt 기한이 만료됐다고 판단, refreshToken 은 그대로 두고 accessToken 만 새로 갱신
+      (redis 에서도 accessToken 새로 갱신한걸 저장)
