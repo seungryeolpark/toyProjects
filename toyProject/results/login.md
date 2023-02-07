@@ -1,22 +1,28 @@
 ## 로그인 영역 결과
 
 + admin 로그인 성공
+
 ![](https://user-images.githubusercontent.com/48073115/217143938-78b58085-8a8f-4486-9082-0b7b6323911a.png)
 
 + member 로그인 실패
+
 ![](https://user-images.githubusercontent.com/48073115/217144039-8e4ebad2-fdef-44a0-b298-6ca06d418441.png)
 
 + 이메일 인증번호 보내기
+
 ![send-cert_email](https://user-images.githubusercontent.com/48073115/217144175-082fa267-64b5-4358-94e7-3de828e8bfe6.png)
 ![send-cert_email2](https://user-images.githubusercontent.com/48073115/217144217-7de082c4-9d41-4027-a104-7449408467f5.png)
 
 + 회원가입 인증번호 실패
+
 ![signup_cert_fail](https://user-images.githubusercontent.com/48073115/217144595-7b2f6fb3-a92a-4a38-beb1-6604a4e0d279.png)
 
 + 회원가입 성공
+
 ![signup_sucess](https://user-images.githubusercontent.com/48073115/217144779-1d300b52-15e0-43ed-894d-ae53e4fd01a6.png)
 
 + member 로그인 성공
+
 ![member_login](https://user-images.githubusercontent.com/48073115/217145012-76aeb497-6675-4503-b20c-e5423edb0e19.png)
 
 + jwt 오류
@@ -28,7 +34,8 @@
       ![jwt_expired](https://user-images.githubusercontent.com/48073115/217147956-1f1056ff-2ae9-4c75-96f0-8aac3c27c99a.png)
 
 + Admin 권한에 User 권한 접근 금지
-  ![forbidden](https://user-images.githubusercontent.com/48073115/217147312-360c6d94-09c0-4fbc-9a7b-31e18f22580f.png)
+
+![forbidden](https://user-images.githubusercontent.com/48073115/217147312-360c6d94-09c0-4fbc-9a7b-31e18f22580f.png)
 
 + refreshToken 알고리즘
     + 지금 접속한 ip 와 access token 에 있는 ip 비교
