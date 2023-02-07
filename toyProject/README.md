@@ -42,3 +42,5 @@ Refresh Token 을 어떻게 구현할지 많은 고민을 하였다.
     + Redis 에서 찾아낸 값과 Access Token 값이 같을 경우 사용자의 Access Token 을 새로 발급하며 
    Redis 에서 찾아낸 값을 새로 발급한 Access Token 으로 갱신한다.
 
+## 📺 결과
+[로그인 영역 결과](https://github.com/seungryeolpark/toyProjects/blob/master/toyProject/results/login.md)
